@@ -2,7 +2,7 @@
   "author": "José F. Romaniello <jfromaniello@gmail.com> (http://joseoncode.com)",
   "name": "fstream-s3",
   "description": "Advanced FS streaming to amazon s3 for Node",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "repository": {
     "type": "git",
     "url": "git://github.com/jfromaniello/fstream-s3.git"
