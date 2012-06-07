@@ -5,17 +5,18 @@ This library is meant to be used with [fstream](https://github.com/isaacs/fstrea
 
 # Usage
 
-Upload the local directory ```../somelocaldir``` to amazon s3 in the bucket ```buckettt``` and the directory /destination **recursively**.
+Upload the local directory ```../somelocaldir``` to Amazon S3 in the bucket ```buckettt``` and the directory ```/destination``` **recursively**.
 
 ```js
-var Writer = require("fstream-s3").Writer,
+var Writer = require('fstream-s3').Writer,
+	fstream = require('fstream'),
 	writer = new Writer({
-				accessKeyId: "..", 
-				secretAccessKey: "..", 
-				bucket: "buckettt", 
-				region: "...",
-				baseDir: "/destination" }),
-	reader = fstream.Reader({path: "../somelocaldir", type: 'Directory'});
+				accessKeyId: '..', 
+				secretAccessKey: '..', 
+				bucket: 'buckettt', 
+				region: '..',
+				baseDir: '/destination' }),
+	reader = fstream.Reader({path: '../somelocaldir', type: 'Directory'});
 
 reader.pipe(writer);
 
