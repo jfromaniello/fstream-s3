@@ -5,7 +5,7 @@ This library is meant to be used with [fstream](https://github.com/isaacs/fstrea
 
 # Usage
 
-Upload the local directory ```../somelocaldir``` to amazon s3 in the bucket ```buckettt``` `and directory ```/destination``` **recursively**.
+Upload the local directory ```../somelocaldir``` to amazon s3 in the bucket ```buckettt``` and the directory /destination **recursively**.
 
 ```js
 var Writer = require("fstream-s3").Writer,
