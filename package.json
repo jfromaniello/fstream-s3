@@ -3,6 +3,7 @@
   "name": "fstream-s3",
   "description": "Advanced FS streaming to amazon s3 for Node",
   "version": "0.0.0",
+  "tags":[ "amazon", "s3", "fstream" ],
   "dependencies": {
     "awssum": "~0.6.1",
     "fstream": "~0.1.18"
