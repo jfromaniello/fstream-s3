@@ -1,4 +1,4 @@
-Allows to write an stream of files and direcotire to Amazon S3. 
+Write or read streams of files and directories to Amazon S3. 
 
 This library is meant to be used with [fstream](https://github.com/isaacs/fstream/) and it uses [awssum](https://github.com/appsattic/node-awssum) internally.
 
