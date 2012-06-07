@@ -27,7 +27,7 @@ class DirWriter extends Writer
         Body: entry
         ObjectName: path.join(@params.baseDir, relPath)
       @s3.PutObject newObject, 
-                    (err, r) -> me.emit "error", err if err
+                    (err, r) -> @emit "error", err if err
 
   write: () -> true
 
