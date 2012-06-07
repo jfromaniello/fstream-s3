@@ -15,3 +15,7 @@ var params = {
 
 
 reader.pipe(writer);
+
+reader.on("end", function(){
+    console.log("ended!!");
+});
