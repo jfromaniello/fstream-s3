@@ -5,7 +5,7 @@ amazon    = awssum.load 'amazon/amazon'
 s3Service = awssum.load('amazon/s3').S3
 
 class DirWriter extends Writer 
-  constructor: (@params, @relativeTo = "") ->
+  constructor: (@params, @rel="") ->
     s3params =
         accessKeyId: @params.accessKeyId,  
         secretAccessKey: @params.secretAccessKey, 
@@ -15,21 +15,28 @@ class DirWriter extends Writer
     @_ended = false
     @_buffer = []
 
-  add: (entry) ->
+  add: (rel, entry) ->
+    unless entry?
+      entry = rel
+      rel = ""
+
     if entry.type == "Directory"
-      entry.pipe(this)
+      newRel = entry.path.substr(-1*(entry.basename.length + @rel.length + 1))
+      entry.pipe(new DirWriter(@params, newRel))
     else
       @_buffer.push(entry)
       @_process()
+
     return @_buffer.length is 0
 
   _process: () ->
     if @_pushing or @_buffer.length == 0 
       return
+    
 
     @_pushing = true
     entry = @_buffer.shift()
-    relPath = entry.path.substr(-1*(entry.basename.length + @relativeTo.length + 1))
+    relPath = entry.path.substr(-1*(entry.basename.length + @rel.length + 1))
     @emit "entry", entry
 
     newObject =

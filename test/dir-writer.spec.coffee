@@ -38,12 +38,12 @@ describe "directory writer", () ->
             baseDir:         'test1/'
 
     writer = new Writer(params)
-    
+
     reader.on "end", () ->
       s3.ListObjects {BucketName: process.env['S3_TEST_BUCKET'], Prefix: "test1"}, (err, res) => 
-        res.Body.ListBucketResult.Contents
-          .filter((f) => f.Key is "test1/test.txt")
-          .length.should.be.eql(1)
+        keys = res.Body.ListBucketResult.Contents.map((f) -> f.Key)
+        keys.should.includeEql("test1/test.txt")
+        keys.should.includeEql("test1/afolder/foobarbaz")
         done()
 
     reader.pipe(writer)
