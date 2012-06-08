@@ -21,7 +21,7 @@ class DirWriter extends Writer
       rel = ""
 
     if entry.type == "Directory"
-      newRel = entry.path.substr(-1*(entry.basename.length + @rel.length + 1))
+      newRel = entry.path.substr(-1*((entry.basename || entry.path).length + @rel.length + 1))
       entry.pipe(new DirWriter(@params, newRel))
     else
       @_buffer.push(entry)
@@ -36,7 +36,7 @@ class DirWriter extends Writer
 
     @_pushing = true
     entry = @_buffer.shift()
-    relPath = entry.path.substr(-1*(entry.basename.length + @rel.length + 1))
+    relPath = entry.path.substr(-1*((entry.basename || entry.path).length + @rel.length + 1))
     @emit "entry", entry
 
     newObject =
@@ -47,11 +47,16 @@ class DirWriter extends Writer
 
     newObject.ObjectName = newObject.ObjectName.replace(/\\/g, "\/")  if process.platform == "win32"
 
+    entry.on "end", ->
+      _this._pushing = false;
+      _this._process();
+
     @s3.PutObject newObject, (err, r) => 
                                 if err
                                   @emit "error", err 
                                 else
                                   @_pushing = false
+                                  entry.resume()
                                   @emit "drain"
                                   @_process()
 

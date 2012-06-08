@@ -14,6 +14,7 @@ s3opt =
     secretAccessKey: process.env['S3_SECRET_KEY'], 
     region:          amazon[process.env['S3_TEST_REGION']]
 s3 = new S3(s3opt)
+tar     = require "tar"
 
 
 describe "directory writer", () ->
@@ -47,3 +48,29 @@ describe "directory writer", () ->
         done()
 
     reader.pipe(writer)
+
+  it "can send from a tared stream", (done) ->
+    dirReader = fstream.Reader(path: path.normalize(path.join(__dirname, '../examples/fixture')), type: 'Directory')
+    params = 
+            accessKeyId:     process.env['S3_ACCESS_KEY'],  
+            secretAccessKey: process.env['S3_SECRET_KEY'], 
+            bucket:          process.env['S3_TEST_BUCKET'],
+            region:          process.env['S3_TEST_REGION'],  
+            baseDir:         'test1/'
+
+    writer = new Writer(params)
+    tarPacker = tar.Pack()
+    tarParser = tar.Parse()
+
+    dirReader.on "end", () ->
+      s3.ListObjects {BucketName: process.env['S3_TEST_BUCKET'], Prefix: "test1"}, (err, res) => 
+        keys = res.Body.ListBucketResult.Contents.map((f) -> f.Key)
+        keys.should.includeEql("test1/test.txt")
+        keys.should.includeEql("test1/afolder/foobarbaz")
+        done()
+
+    dirReader
+        .pipe(tarPacker)
+        .pipe(tarParser)
+        .pipe(writer)
+
