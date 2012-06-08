@@ -45,6 +45,7 @@ class DirWriter extends Writer
       Body: entry
       ObjectName: path.join(@params.baseDir, relPath)
 
+    newObject.ObjectName = newObject.ObjectName.replace(/\\/g, "\/")  if process.platform == "win32"
 
     @s3.PutObject newObject, (err, r) => 
                                 if err
