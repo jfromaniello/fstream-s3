@@ -49,6 +49,24 @@ describe "directory writer", () ->
 
     reader.pipe(writer)
 
+  it "should set the right content type", (done) ->
+    reader = fstream.Reader(path: path.normalize(path.join(__dirname, '../examples/fixture')), type: 'Directory')
+    params = 
+            accessKeyId:     process.env['S3_ACCESS_KEY'],  
+            secretAccessKey: process.env['S3_SECRET_KEY'], 
+            bucket:          process.env['S3_TEST_BUCKET'],
+            region:          process.env['S3_TEST_REGION'],  
+            baseDir:         'test1/'
+
+    writer = new Writer(params)
+
+    reader.on "end", () ->
+      s3.GetObjectMetadata {BucketName: process.env['S3_TEST_BUCKET'], ObjectName: "test1/test.txt"}, (err, res) => 
+        res.Headers["content-type"].should.eql("text/plain");
+        done()
+
+    reader.pipe(writer)
+
   it "can send from a tared stream", (done) ->
     dirReader = fstream.Reader(path: path.normalize(path.join(__dirname, '../examples/fixture')), type: 'Directory')
     params = 

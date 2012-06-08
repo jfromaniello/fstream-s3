@@ -2,7 +2,7 @@
   "author": "José F. Romaniello <jfromaniello@gmail.com> (http://joseoncode.com)",
   "name": "fstream-s3",
   "description": "Advanced FS streaming to amazon s3 for Node",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "repository": {
     "type": "git",
     "url": "git://github.com/jfromaniello/fstream-s3.git"
@@ -15,7 +15,8 @@
   ],
   "dependencies": {
     "awssum": "~0.6.1",
-    "fstream": "~0.1.18"
+    "fstream": "~0.1.18",
+    "mime": "~1.2.5"
   },
   "devDependencies": {
     "mocha": "~1.1.0",
@@ -25,7 +26,7 @@
   },
   "scripts": {
     "prepublish": "cake build",
-    "test":       "cake test"
+    "test": "cake test"
   },
   "optionalDependencies": {},
   "engines": {

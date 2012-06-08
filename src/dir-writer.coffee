@@ -3,6 +3,7 @@ path      = require "path"
 awssum    = require 'awssum'
 amazon    = awssum.load 'amazon/amazon'
 s3Service = awssum.load('amazon/s3').S3
+mime      = require('mime')
 
 class DirWriter extends Writer 
   constructor: (@params, @rel="") ->
@@ -44,6 +45,7 @@ class DirWriter extends Writer
       ContentLength: entry.props.size
       Body: entry
       ObjectName: path.join(@params.baseDir, relPath)
+      ContentType: mime.lookup(relPath)
 
     newObject.ObjectName = newObject.ObjectName.replace(/\\/g, "\/")  if process.platform == "win32"
 
