@@ -1,4 +1,3 @@
-require('coffee-script');
 var Writer = require('../lib').Writer,
     path = require('path'),
     fstream = require('fstream'),
